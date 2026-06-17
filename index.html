@@ -61,13 +61,6 @@
 <body>
 <div id="app"></div>
 <script>
-/* ============================================================
-   CONFIG
-   If direct calls are blocked by CORS, deploy the tiny Cloudflare
-   Worker (see chat) and put its URL here, e.g.
-     PROXY: "https://qb-proxy.yourname.workers.dev/"
-   Leave "" to call QBReader directly.
-   ============================================================ */
 const CONFIG = { PROXY: "" };
 
 const ORIGIN = "https://www.qbreader.org/api/";
@@ -81,16 +74,12 @@ const SUBCATS = ["Biology", "Chemistry", "Physics", "Other Science"];
 const DIFFS = { "Hard (8–10)": [8,9,10], "Mixed (6–10)": [6,7,8,9,10], "Brutal (10)": [10] };
 const SECS = [3,5,7,10];
 
-/* ---------- abbreviation-safe clue splitter ----------
-   Splits on sentence end + space + Capital, but protects:
-   genus initials (E. coli, S. Typhimurium), acronym chains
-   (U.S. Government), and titles/abbrevs (Dr., Ph.D., e.g.). */
 function splitClues(text){
   if(!text) return [];
   let s = text.replace(/\s+/g," ").trim();
-  const K = "\u0001"; // no-split marker (replaces the space)
-  s = s.replace(/\b((?:[A-Za-z]\.){2,})\s+(?=[A-Z])/g, (m,g)=> g+K);      // U.S. , Ph.D. , e.g.
-  s = s.replace(/\b([A-Z])\.\s+(?=[A-Za-z])/g, (m,g)=> g+"."+K);          // E. coli , S. Typhimurium
+  const K = "\u0001";
+  s = s.replace(/\b((?:[A-Za-z]\.){2,})\s+(?=[A-Z])/g, (m,g)=> g+K);
+  s = s.replace(/\b([A-Z])\.\s+(?=[A-Za-z])/g, (m,g)=> g+"."+K);
   const ABBR = ["Dr","Mr","Mrs","Ms","Prof","Sen","Rep","Gov","St","Mt","vs","etc","al",
                 "Fig","figs","No","Vol","pp","ca","approx","Inc","Ltd","Co","Jr","Sr",
                 "Gen","cf","Rev","Eq","eq","ref"];
@@ -107,7 +96,6 @@ function splitClues(text){
   return out.length ? out : [s];
 }
 
-/* ---------- state ---------- */
 const S = {
   screen:"settings",
   subcat:"Biology", diffLabel:"Hard (8–10)", seconds:5, clueMode:true,
@@ -148,8 +136,8 @@ function loadNext(fresh){
   const src = (fresh && fresh.length) ? fresh : S.queue;
   if(!src.length){ S.phase="idle"; render(); return; }
   const next = src.shift();
-  if(src === S.queue){} else { S.queue = S.queue; } // next already removed from fresh ref if same
-  if(fresh && fresh.length){ /* fresh shares ref w/ queue head; ensure removed from queue too */
+  if(src === S.queue){} else { S.queue = S.queue; }
+  if(fresh && fresh.length){
     const i = S.queue.indexOf(next); if(i>=0) S.queue.splice(i,1);
   }
   S.cur = next;
@@ -176,6 +164,7 @@ function startTimer(){
     }
   }, 100);
 }
+
 function stopTimer(){ if(S.interval){ clearInterval(S.interval); S.interval=null; } }
 
 function buzz(){ stopTimer(); S.buzzAt = S.clueIdx; S.phase = "answering"; S.promptHint=null; render(); }
@@ -205,7 +194,6 @@ function reveal(at, correct){
   stopTimer();
   S.buzzAt = at;
   S.phase = "revealed";
-  // grade. timed-out (at===null) counts as missed.
   const got = correct === true;
   S.verdict = at===null ? "timeout" : (got ? "correct" : "incorrect");
   S.stats.seen++;
@@ -223,7 +211,6 @@ async function start(){
   if(fresh.length) loadNext(fresh); else render();
 }
 
-/* ---------- rendering ---------- */
 function chip(opt,cur,on){ return `<button class="chip ${opt===cur?'on':''}" data-${on}="${esc(opt)}">${esc(opt)}</button>`; }
 
 function renderSettings(){
