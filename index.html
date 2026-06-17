@@ -6,56 +6,60 @@
 <title>QB Bio Drill</title>
 <style>
   :root{
-    --bg:#0b0d10; --surface:#14181d; --surface2:#1b2128; --line:#262e36;
-    --text:#e8edf2; --muted:#8a97a3; --faint:#5b6670;
-    --amber:#e3b341; --cyan:#56b6c2; --good:#7fcf8e; --bad:#e06c75;
+    --bg:#0c0c0d; --raise:#141416; --line:#222224;
+    --text:#ededee; --muted:#8a8a8f; --faint:#56565b;
+    --gold:#c9a84c; --crimson:#cf3a4e;
+    --chrome:#cfcfd2; --chrome-mid:var(--gold); --urgent:var(--crimson);
+    --good:var(--gold); --bad:var(--crimson);
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
-    --serif:Georgia,"Times New Roman",serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{background:var(--bg);color:var(--text);font-family:var(--serif);
-    -webkit-font-smoothing:antialiased;min-height:100vh}
-  #app{max-width:480px;margin:0 auto;padding:20px 16px calc(28px + env(safe-area-inset-bottom))}
-  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--amber)}
-  h1{font-family:var(--serif);font-size:26px;line-height:1.15;margin:6px 0 2px}
-  .sub{color:var(--muted);font-size:13px;margin:0 0 22px}
-  .label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.5px;margin-bottom:7px}
-  .field{margin-bottom:16px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;min-height:100vh;font-weight:400}
+  #app{max-width:440px;margin:0 auto;padding:28px 18px calc(32px + env(safe-area-inset-bottom))}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--faint)}
+  h1{font-size:26px;line-height:1.15;margin:10px 0 4px;font-weight:500;color:var(--text)}
+  .sub{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 26px}
+  .label{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.5px;margin-bottom:8px}
+  .field{margin-bottom:18px}
   .chips{display:flex;gap:8px;flex-wrap:wrap}
   .chip{font-family:var(--mono);font-size:13px;padding:8px 12px;border-radius:8px;
-    border:1px solid var(--line);background:var(--surface);color:var(--text);cursor:pointer}
-  .chip.on{border-color:var(--amber);background:var(--amber);color:var(--bg)}
+    border:1px solid var(--line);background:transparent;color:var(--muted)}
+  .chip.on{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.08)}
   button{cursor:pointer;font-family:var(--mono)}
-  .btn{width:100%;font-size:15px;font-weight:600;padding:14px;border-radius:10px;
-    border:1px solid var(--amber);background:var(--amber);color:var(--bg);letter-spacing:.5px}
-  .btn.ghost{background:var(--surface2);border-color:var(--line);color:var(--text)}
-  .btn.good{background:var(--surface2);border-color:var(--good);color:var(--good)}
-  .btn.bad{background:var(--surface2);border-color:var(--bad);color:var(--bad)}
+  .btn{width:100%;font-size:14px;font-weight:600;padding:13px;border-radius:8px;letter-spacing:.3px;
+    border:1px solid var(--gold);background:transparent;color:var(--gold)}
+  .btn:active{background:rgba(201,168,76,.12)}
+  .btn.ghost{border-color:var(--line);color:var(--muted)}
+  .btn.ghost:active{background:rgba(255,255,255,.04)}
   .row{display:flex;gap:10px}
-  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-  .mini{background:none;border:none;font-size:11px;color:var(--muted)}
-  .stats{display:flex;gap:16px;margin-bottom:16px;font-family:var(--mono);font-size:12px}
-  .stat .v{font-size:18px}
-  .stat .k{color:var(--faint);font-size:10px;letter-spacing:.5px}
-  .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;
-    font-family:var(--mono);font-size:11px}
-  .barwrap{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:18px}
-  .bar{height:100%;background:var(--amber);width:100%}
-  .clue{font-family:var(--serif);font-size:18px;line-height:1.5;min-height:150px;margin-bottom:16px}
-  input.ans{width:100%;font-family:var(--serif);font-size:17px;padding:12px 14px;border-radius:8px;
-    border:1px solid var(--line);background:var(--surface);color:var(--text);margin-bottom:10px}
-  input.ans:focus{outline:none;border-color:var(--amber)}
-  .answer{background:var(--surface2);border:1px solid var(--line);border-left:3px solid var(--cyan);
-    border-radius:8px;padding:12px 14px;margin-bottom:18px}
-  .answer .tag{font-family:var(--mono);font-size:10px;letter-spacing:1px;margin-bottom:4px;color:var(--faint)}
-  .answer .txt{font-family:var(--serif);font-size:17px;color:var(--cyan);line-height:1.4}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .mini{background:none;border:none;font-size:11px;color:var(--faint)}
+  .stats{display:flex;gap:18px;margin-bottom:20px;font-family:var(--mono);font-size:12px}
+  .stat .v{font-size:18px;font-weight:500}
+  .stat .k{color:var(--faint);font-size:10px;letter-spacing:.5px;margin-top:1px}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.5px}
+  .barwrap{height:2px;background:#1d1d1f;border-radius:2px;overflow:hidden;margin-bottom:22px}
+  .bar{height:100%;width:100%;background:var(--gold);transition:width .05s linear}
+  .bar.ans{background:var(--crimson)}
+  .clue{font-size:18px;line-height:1.58;min-height:150px;margin-bottom:18px;color:#e6e6e8}
+  input.ans{width:100%;font-family:var(--sans);font-size:17px;padding:12px 0;border:none;
+    border-bottom:1px solid var(--line);background:transparent;color:var(--text);margin-bottom:12px}
+  input.ans::placeholder{color:var(--faint)}
+  input.ans:focus{outline:none;border-bottom-color:var(--gold)}
+  .answer{border-left:2px solid var(--gold);padding:2px 0 2px 14px;margin-bottom:20px}
+  .answer .tag{font-family:var(--mono);font-size:10px;letter-spacing:1px;margin-bottom:5px;color:var(--faint)}
+  .answer .txt{font-size:17px;color:var(--text);line-height:1.4}
   .answer .src{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:8px}
-  .verdict{font-family:var(--mono);font-size:13px;margin-bottom:10px}
-  .err{background:#241a1a;border:1px solid var(--bad);border-radius:8px;padding:12px 14px;
-    color:#f0c9cc;font-size:13px;line-height:1.45;margin-top:14px;font-family:var(--mono)}
-  .err code{color:#fff;word-break:break-all}
-  .sticky{position:sticky;bottom:0;padding-top:6px;background:linear-gradient(to top,var(--bg) 70%,transparent)}
+  .verdict{font-family:var(--mono);font-size:13px;letter-spacing:.5px;margin-bottom:12px}
+  .err{border:1px solid var(--crimson);border-radius:8px;padding:12px 14px;color:#e9b3ba;
+    font-size:13px;line-height:1.5;margin-top:16px;font-family:var(--mono)}
+  .err code{color:var(--text);word-break:break-all}
+  .sticky{position:sticky;bottom:0;padding-top:8px;
+    background:linear-gradient(to top,var(--bg) 75%,transparent)}
 </style>
 </head>
 <body>
@@ -73,6 +77,7 @@ const apiUrl = (endpoint, params) => {
 const SUBCATS = ["Biology", "Chemistry", "Physics", "Other Science"];
 const DIFFS = { "Hard (8–10)": [8,9,10], "Mixed (6–10)": [6,7,8,9,10], "Brutal (10)": [10] };
 const SECS = [3,5,7,10];
+const ANS_SECS = [3,4,5];
 
 function splitClues(text){
   if(!text) return [];
@@ -98,7 +103,7 @@ function splitClues(text){
 
 const S = {
   screen:"settings",
-  subcat:"Biology", diffLabel:"Hard (8–10)", seconds:5, clueMode:true,
+  subcat:"Biology", diffLabel:"Hard (8–10)", seconds:5, answerSeconds:3, clueMode:true,
   queue:[], cur:null, clues:[], clueIdx:0,
   phase:"idle", buzzAt:null, verdict:null, promptHint:null,
   stats:{seen:0,got:0,missed:0,buzzSum:0,buzzN:0},
@@ -132,23 +137,19 @@ async function fetchBatch(){
   }finally{ S.loading = false; }
 }
 
-function loadNext(fresh){
-  const src = (fresh && fresh.length) ? fresh : S.queue;
-  if(!src.length){ S.phase="idle"; render(); return; }
-  const next = src.shift();
-  if(src === S.queue){} else { S.queue = S.queue; }
-  if(fresh && fresh.length){
-    const i = S.queue.indexOf(next); if(i>=0) S.queue.splice(i,1);
-  }
-  S.cur = next;
-  S.clues = splitClues(next.question_sanitized);
+function loadNext(){
+  if(!S.queue.length){ S.phase="idle"; render(); return; }
+  S.cur = S.queue.shift();
+  S.clues = splitClues(S.cur.question_sanitized);
   S.clueIdx = 0; S.buzzAt = null; S.verdict = null; S.promptHint = null;
   S.phase = "running";
   if(S.queue.length < 4) fetchBatch();
-  render(); startTimer();
+  render(); startClueTimer();
 }
 
-function startTimer(){
+function stopTimer(){ if(S.interval){ clearInterval(S.interval); S.interval=null; } }
+
+function startClueTimer(){
   stopTimer();
   if(S.phase !== "running") return;
   S.deadline = Date.now() + S.seconds*1000;
@@ -158,20 +159,35 @@ function startTimer(){
     if(bar) bar.style.width = (left/(S.seconds*1000)*100) + "%";
     if(tm) tm.textContent = (left/1000).toFixed(1) + "s";
     if(left <= 0){
-      if(S.clueMode && S.clueIdx < S.clues.length-1){
-        S.clueIdx++; render(); startTimer();
-      } else { reveal(null); }
+      if(S.clueMode && S.clueIdx < S.clues.length-1){ S.clueIdx++; render(); startClueTimer(); }
+      else { reveal(null, false); }
     }
   }, 100);
 }
 
-function stopTimer(){ if(S.interval){ clearInterval(S.interval); S.interval=null; } }
+function startAnswerTimer(){
+  stopTimer();
+  S.deadline = Date.now() + S.answerSeconds*1000;
+  S.interval = setInterval(()=>{
+    const left = Math.max(0, S.deadline - Date.now());
+    const bar = el("abar"), tm = el("atime");
+    if(bar) bar.style.width = (left/(S.answerSeconds*1000)*100) + "%";
+    if(tm) tm.textContent = (left/1000).toFixed(1) + "s";
+    if(left <= 0){
+      stopTimer();
+      const inp = el("ansInput");
+      if(inp && inp.value.trim()) submitAnswer();
+      else reveal(S.buzzAt, false, "tooslow");
+    }
+  }, 100);
+}
 
-function buzz(){ stopTimer(); S.buzzAt = S.clueIdx; S.phase = "answering"; S.promptHint=null; render(); }
+function buzz(){ stopTimer(); S.buzzAt = S.clueIdx; S.phase = "answering"; S.promptHint=null; render(); startAnswerTimer(); }
 
 async function submitAnswer(){
+  stopTimer();
   const inp = el("ansInput"); if(!inp) return;
-  const given = inp.value.trim(); if(!given) return;
+  const given = inp.value.trim(); if(!given){ startAnswerTimer(); return; }
   inp.disabled = true;
   try{
     const r = await fetch(apiUrl("check-answer", {
@@ -182,33 +198,32 @@ async function submitAnswer(){
       S.promptHint = d.directedPrompt || "Prompt — be more specific.";
       render();
       const ni = el("ansInput"); if(ni){ ni.value=""; ni.focus(); }
+      startAnswerTimer();
       return;
     }
     reveal(S.clueIdx, d.directive === "accept");
-  }catch(e){
-    S.error = "Judge request failed: " + e.message; render();
-  }
+  }catch(e){ S.error = "Judge request failed: " + e.message; render(); }
 }
 
-function reveal(at, correct){
+function reveal(at, correct, kind){
   stopTimer();
   S.buzzAt = at;
   S.phase = "revealed";
   const got = correct === true;
-  S.verdict = at===null ? "timeout" : (got ? "correct" : "incorrect");
+  S.verdict = kind || (at===null ? "timeout" : (got ? "correct" : "incorrect"));
   S.stats.seen++;
   if(got) S.stats.got++; else S.stats.missed++;
   if(at!=null){ S.stats.buzzSum += at+1; S.stats.buzzN++; }
   render();
 }
 
-function giveUp(){ reveal(null, false); }
+function giveUp(){ reveal(S.buzzAt, false, "incorrect"); }
 
 async function start(){
   S.screen="drill"; S.stats={seen:0,got:0,missed:0,buzzSum:0,buzzN:0};
   render();
-  const fresh = await fetchBatch();
-  if(fresh.length) loadNext(fresh); else render();
+  await fetchBatch();
+  loadNext();
 }
 
 function chip(opt,cur,on){ return `<button class="chip ${opt===cur?'on':''}" data-${on}="${esc(opt)}">${esc(opt)}</button>`; }
@@ -217,13 +232,15 @@ function renderSettings(){
   app().innerHTML = `
     <div class="eyebrow">QB · BIO DRILL</div>
     <h1>Tossup buzzpoint trainer</h1>
-    <p class="sub">Live questions from the QBReader database. Clue-by-clue reveal, buzz, type, auto-graded.</p>
+    <p class="sub">Live questions from the QBReader database. Clue-by-clue reveal, buzz, then a short window to answer — auto-graded.</p>
     <div class="field"><div class="label">Subcategory</div>
       <div class="chips">${SUBCATS.map(o=>chip(o,S.subcat,"sub")).join("")}</div></div>
     <div class="field"><div class="label">Difficulty (tournament scale, not academic level)</div>
       <div class="chips">${Object.keys(DIFFS).map(o=>chip(o,S.diffLabel,"diff")).join("")}</div></div>
-    <div class="field"><div class="label">Seconds per step</div>
+    <div class="field"><div class="label">Seconds per clue</div>
       <div class="chips">${SECS.map(o=>chip(String(o),String(S.seconds),"sec")).join("")}</div></div>
+    <div class="field"><div class="label">Answer window (after buzz)</div>
+      <div class="chips">${ANS_SECS.map(o=>chip(String(o),String(S.answerSeconds),"asec")).join("")}</div></div>
     <div class="field"><div class="label">Reveal mode</div>
       <div class="chips">
         ${chip("Clue-by-clue", S.clueMode?"Clue-by-clue":"Whole question","mode")}
@@ -235,6 +252,7 @@ function renderSettings(){
   document.querySelectorAll("[data-sub]").forEach(b=>b.onclick=()=>{S.subcat=b.dataset.sub;render();});
   document.querySelectorAll("[data-diff]").forEach(b=>b.onclick=()=>{S.diffLabel=b.dataset.diff;render();});
   document.querySelectorAll("[data-sec]").forEach(b=>b.onclick=()=>{S.seconds=Number(b.dataset.sec);render();});
+  document.querySelectorAll("[data-asec]").forEach(b=>b.onclick=()=>{S.answerSeconds=Number(b.dataset.asec);render();});
   document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{S.clueMode=(b.dataset.mode==="Clue-by-clue");render();});
   el("startBtn").onclick=start;
 }
@@ -248,8 +266,8 @@ function renderDrill(){
   } else if(S.phase==="answering"){
     controls = `
       <input class="ans" id="ansInput" type="text" autocomplete="off" autocapitalize="off"
-        autocorrect="off" placeholder="Type answer, then Enter" />
-      ${S.promptHint?`<div class="verdict" style="color:var(--amber)">↳ ${esc(S.promptHint)}</div>`:""}
+        autocorrect="off" placeholder="Answer — clock is running" />
+      ${S.promptHint?`<div class="verdict" style="color:var(--gold)">↳ ${esc(S.promptHint)}</div>`:""}
       <div class="row">
         <button class="btn ghost" id="giveBtn">Give up</button>
         <button class="btn" id="subBtn">Submit</button>
@@ -263,29 +281,44 @@ function renderDrill(){
   let verdictHtml = "";
   if(S.phase==="revealed"){
     const v = S.verdict;
-    const col = v==="correct"?"var(--good)":v==="incorrect"?"var(--bad)":"var(--faint)";
-    const txt = v==="correct"?"✓ correct":v==="incorrect"?"✗ incorrect":"— timed out";
+    const map = {correct:["✓ correct","var(--gold)"], incorrect:["✗ incorrect","var(--crimson)"],
+                 tooslow:["✗ too slow","var(--crimson)"], timeout:["— timed out","var(--faint)"]};
+    const [txt,col] = map[v] || map.timeout;
     verdictHtml = `<div class="verdict" style="color:${col}">${txt}</div>`;
+  }
+
+  let barHtml = "";
+  if(S.phase==="running"){
+    barHtml = `<div class="meta">
+        <span style="color:var(--gold)">${S.clueMode?`CLUE ${String(S.clueIdx+1).padStart(2,"0")} / ${String(S.clues.length).padStart(2,"0")}`:"FULL QUESTION"}</span>
+        <span id="time" style="color:var(--faint)">${S.seconds.toFixed(1)}s</span></div>
+      <div class="barwrap"><div class="bar" id="bar"></div></div>`;
+  } else if(S.phase==="answering"){
+    barHtml = `<div class="meta">
+        <span style="color:var(--crimson)">ANSWER</span>
+        <span id="atime" style="color:var(--faint)">${S.answerSeconds.toFixed(1)}s</span></div>
+      <div class="barwrap"><div class="bar ans" id="abar"></div></div>`;
+  } else {
+    barHtml = `<div class="meta">
+        <span style="color:var(--faint)">${S.clueMode?`CLUE ${String(S.clueIdx+1).padStart(2,"0")} / ${String(S.clues.length).padStart(2,"0")}`:"FULL QUESTION"}</span>
+        <span style="color:var(--faint)"></span></div>
+      <div class="barwrap"><div class="bar" style="width:0%"></div></div>`;
   }
 
   app().innerHTML = `
     <div class="topbar">
-      <span class="label" style="margin:0;color:var(--faint)">${esc(S.subcat.toUpperCase())} · D${DIFFS[S.diffLabel].join("/")}</span>
+      <span class="label" style="margin:0">${esc(S.subcat.toUpperCase())} · D${DIFFS[S.diffLabel].join("/")}</span>
       <button class="mini" id="setBtn">settings</button>
     </div>
     <div class="stats">
       <div class="stat"><div class="v">${S.stats.seen}</div><div class="k">seen</div></div>
-      <div class="stat"><div class="v" style="color:var(--good)">${S.stats.got}</div><div class="k">got</div></div>
-      <div class="stat"><div class="v" style="color:var(--bad)">${S.stats.missed}</div><div class="k">missed</div></div>
-      <div class="stat"><div class="v" style="color:var(--amber)">${avg}</div><div class="k">avg buzz clue</div></div>
+      <div class="stat"><div class="v" style="color:var(--gold)">${S.stats.got}</div><div class="k">got</div></div>
+      <div class="stat"><div class="v" style="color:var(--crimson)">${S.stats.missed}</div><div class="k">missed</div></div>
+      <div class="stat"><div class="v">${avg}</div><div class="k">avg buzz clue</div></div>
     </div>
     ${S.error?`<div class="err">${esc(S.error)}</div>`:""}
     ${S.cur?`
-      <div class="meta">
-        <span style="color:var(--amber);letter-spacing:1px">${S.clueMode?`CLUE ${String(S.clueIdx+1).padStart(2,"0")} / ${String(S.clues.length).padStart(2,"0")}`:"FULL QUESTION"}</span>
-        <span id="time" style="color:var(--faint)">${S.phase==="running"?S.seconds.toFixed(1)+"s":""}</span>
-      </div>
-      <div class="barwrap"><div class="bar" id="bar"></div></div>
+      ${barHtml}
       <div class="clue">${esc(shown)}</div>
       ${verdictHtml}
       ${S.phase==="revealed"?`
